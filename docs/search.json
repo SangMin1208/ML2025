@@ -2,16 +2,16 @@
   {
     "objectID": "posts/hihi.html",
     "href": "posts/hihi.html",
-    "title": "1. ML2025",
+    "title": "1. Linear Regression",
     "section": "",
-    "text": "print('test 입니다')\n\ntest 입니다"
+    "text": "‘package’ 불러오기\n\n\nimport numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom matplotlib.pyplot import subplots"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "ML2025",
     "section": "",
-    "text": "Date\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMar 24, 2025\n\n\n1. ML2025\n\n\n이상민 \n\n\n\n\n\nNo matching items"
+    "text": "Date\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMar 24, 2025\n\n\n1. Linear Regression\n\n\n이상민 \n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
