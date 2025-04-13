@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/3.Classification.html",
       "/posts/2.LinearRegression.html",
       "/posts/1.Basics.html"
     ]
