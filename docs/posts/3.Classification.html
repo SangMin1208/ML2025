@@ -59,7 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -102,7 +102,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -333,6 +365,726 @@ Up          457  507</code></pre>
 </div>
 </div>
 <p><code>-</code> 훈련 데이터를 <code>2005</code>년 전과 후로 쪼갬</p>
+<ul>
+<li>훈련 데이터로 학습한 모형으로부터 평가데이터의 예측활률 저장</li>
+<li><span class="math inline">\(\to\)</span> 이를 통해 혼동행렬과 예측 정확도 게산</li>
+</ul>
+<div id="12c09480-369b-4f74-bc17-1e04e649d19b" class="cell" data-execution_count="61">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> (Smarket.Year <span class="op">&lt;</span> <span class="dv">2005</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>Smarket_train <span class="op">=</span> Smarket.loc[train]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>Smarket_test <span class="op">=</span> Smarket.loc[<span class="op">~</span>train]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>Smarket_test.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="61">
+<pre><code>(252, 9)</code></pre>
+</div>
+</div>
+<div id="347364b2-adea-4a73-ab33-55fa8f57f7c5" class="cell" data-execution_count="64">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> X.loc[train], X.loc[<span class="op">~</span>train]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> y.loc[train], y.loc[<span class="op">~</span>train]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>glm_train <span class="op">=</span> sm.GLM(y_train, X_train,family<span class="op">=</span>sm.families.Binomial())</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> glm_train.fit()</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> results.predict(exog<span class="op">=</span>X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="8408706a-fc1e-49bb-a74d-d0f49283e6e9" class="cell" data-execution_count="65">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> Smarket.Direction</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>L_train, L_test <span class="op">=</span> D.loc[train], D.loc[<span class="op">~</span>train]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> np.array([<span class="st">'Down'</span>]<span class="op">*</span><span class="dv">252</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>labels[probs<span class="op">&gt;</span><span class="fl">0.5</span>] <span class="op">=</span> <span class="st">'Up'</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_table(labels, L_test))</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>np.mean(labels <span class="op">!=</span> L_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Truth      Down  Up
+Predicted          
+Down         77  97
+Up           34  44</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="65">
+<pre><code>0.5198412698412699</code></pre>
+</div>
+</div>
+<p><code>-</code> 전체 변수가 아닌 <code>Lag1</code>과 <code>Lag2</code>만으로 로지스틱 회귀분석 진행</p>
+<ul>
+<li>혼동행렬을 통해서 예측정확도 파악</li>
+<li>정확도가 더 낮은 것을 알 수 있음</li>
+</ul>
+<div id="3f1c64f9-d9f0-4d81-9e58-1881affbdbd8" class="cell" data-execution_count="67">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> MS([<span class="st">'Lag1'</span>, <span class="st">'Lag2'</span>]).fit(Smarket)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> model.transform(Smarket)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> X.loc[train], X.loc[<span class="op">~</span>train]</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>glm_train <span class="op">=</span> sm.GLM(y_train,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>X_train ,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>family<span class="op">=</span>sm.families.Binomial())</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> glm_train.fit()</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> results.predict(exog<span class="op">=</span>X_test)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> np.array([<span class="st">'Down'</span>]<span class="op">*</span><span class="dv">252</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>labels[probs<span class="op">&gt;</span><span class="fl">0.5</span>] <span class="op">=</span> <span class="st">'Up'</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_table(labels, L_test))</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>np.mean(labels <span class="op">!=</span>L_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Truth      Down   Up
+Predicted           
+Down         35   35
+Up           76  106</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="67">
+<pre><code>0.44047619047619047</code></pre>
+</div>
+</div>
+<p><code>-</code> 새로운 데이터가 들어왔을 때, 예측확률 계산</p>
+<ul>
+<li>모두 0.5보다 작으므로 0 <span class="math inline">\(\to\)</span> <code>Down</code>으로 예측</li>
+</ul>
+<div id="a8bb67c2-14ba-4fa2-bc1a-dcc5022c7921" class="cell" data-execution_count="68">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>newdata <span class="op">=</span> pd.DataFrame({<span class="st">'Lag1'</span>:[<span class="fl">1.2</span>, <span class="fl">1.5</span>], <span class="st">'Lag2'</span>:[<span class="fl">1.1</span>, <span class="op">-</span><span class="fl">0.8</span>]})<span class="op">;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>newX <span class="op">=</span> model.transform(newdata)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results.predict(newX))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0    0.479146
+1    0.496094
+dtype: float64</code></pre>
+</div>
+</div>
+</section>
+<section id="lda-qda" class="level3">
+<h3 class="anchored" data-anchor-id="lda-qda">3. LDA &amp; QDA</h3>
+<p><code>-</code> 앞의 데이터 이용</p>
+<ul>
+<li><code>LDA</code>로 예측변수들이 주어졌을 때, 0과 1의 확률을 계산</li>
+<li>0과 1의 종류별로 평균벡터와 공유하는 공분산행렬 그리고 각 종에 대한 <code>prior</code>를 보여줌</li>
+<li>여기서 <code>prior</code>은 1실제 0과 1의 비율</li>
+</ul>
+<p><code>-</code> LDA</p>
+<ul>
+<li>각 클래스의 공분산이 같다고 가정</li>
+<li>공분산행렬 하나만 나옴</li>
+<li>직접 계산한 클래스의 비율과 자동으로 계산된 비율 같은거!</li>
+<li>prior을 지정할 수도 있음</li>
+</ul>
+<div id="d167ec9f-57d7-42ff-80ed-4286f14d3cc7" class="cell" data-execution_count="72">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>X_train[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="72">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">intercept</th>
+<th data-quarto-table-cell-role="th">Lag1</th>
+<th data-quarto-table-cell-role="th">Lag2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1.0</td>
+<td>0.381</td>
+<td>-0.192</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1.0</td>
+<td>0.959</td>
+<td>0.381</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1.0</td>
+<td>1.032</td>
+<td>0.959</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1.0</td>
+<td>-0.623</td>
+<td>1.032</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1.0</td>
+<td>0.614</td>
+<td>-0.623</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="c1a82e1b-9b92-4439-837c-e19d82374fbe" class="cell" data-execution_count="84">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#store_covariance=True : 공분산행렬 저장</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>lda <span class="op">=</span> LDA(store_covariance<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#상수항 intercept 제거</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>XX_train, XX_test <span class="op">=</span> [M.drop(columns<span class="op">=</span>[<span class="st">'intercept'</span>]) <span class="cf">for</span> M <span class="kw">in</span> [X_train, X_test]]</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>a, c <span class="op">=</span> np.unique(L_train, return_counts<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'각각의 라벨의 비율 : </span><span class="ch">\n</span><span class="sc">{</span>c<span class="op">/</span>np<span class="sc">.</span><span class="bu">sum</span>(c)<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>lda.fit(XX_train, L_train)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'각 클래스의 평균벡터 : </span><span class="ch">\n</span><span class="ss">         Lag1       Lag2</span><span class="ch">\n</span><span class="ss">Down - </span><span class="sc">{</span>lda<span class="sc">.</span>means_[<span class="dv">0</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">Up   - </span><span class="sc">{</span>lda<span class="sc">.</span>means_[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'공분산 행렬 : </span><span class="ch">\n</span><span class="sc">{</span>lda<span class="sc">.</span>covariance_<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'클래스의 종류 : </span><span class="ch">\n</span><span class="sc">{</span>lda<span class="sc">.</span>classes_<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'각 클래스의 비율 : </span><span class="ch">\n</span><span class="sc">{</span>lda<span class="sc">.</span>priors_<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>각각의 라벨의 비율 : 
+[0.49198397 0.50801603]
+각 클래스의 평균벡터 : 
+         Lag1       Lag2
+Down - [0.04279022 0.03389409]
+Up   - [-0.03954635 -0.03132544]
+공분산 행렬 : 
+[[ 1.50886781 -0.03340234]
+ [-0.03340234  1.5095363 ]]
+클래스의 종류 : 
+['Down' 'Up']
+각 클래스의 비율 : 
+[0.49198397 0.50801603]</code></pre>
+</div>
+</div>
+<p><code>-</code> LDA를 이용한 예측 결과 및 혼동행렬</p>
+<div id="d96c80d8-17db-49df-b341-3332253b1255" class="cell" data-execution_count="87">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>lda_pred <span class="op">=</span> lda.predict(XX_test)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lda_pred[:<span class="dv">15</span>])</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_table(lda_pred, L_test))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['Up' 'Up' 'Up' 'Up' 'Up' 'Up' 'Up' 'Up' 'Up' 'Up' 'Up' 'Down' 'Up' 'Up'
+ 'Up']
+Truth      Down   Up
+Predicted           
+Down         35   35
+Up           76  106</code></pre>
+</div>
+</div>
+<div id="09625cf5-8b6d-447c-bfd4-9a91a29fd86a" class="cell" data-execution_count="89">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>lda_prob <span class="op">=</span> lda.predict_proba(XX_test)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lda_prob[:<span class="dv">15</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[0.49017925 0.50982075]
+ [0.4792185  0.5207815 ]
+ [0.46681848 0.53318152]
+ [0.47400107 0.52599893]
+ [0.49278766 0.50721234]
+ [0.49385615 0.50614385]
+ [0.49510156 0.50489844]
+ [0.4872861  0.5127139 ]
+ [0.49070135 0.50929865]
+ [0.48440262 0.51559738]
+ [0.49069628 0.50930372]
+ [0.51199885 0.48800115]
+ [0.48951523 0.51048477]
+ [0.47067612 0.52932388]
+ [0.47445929 0.52554071]]</code></pre>
+</div>
+</div>
+<p><code>-</code> QDA를 이용한 결과</p>
+<ul>
+<li>여기서는 공분산 행렬이 공유되지 않고 0과 1별로 별도의 공분산 행렬 추정됨</li>
+</ul>
+<div id="54883eec-33f4-419d-93fe-c46c74d26cac" class="cell" data-execution_count="90">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>qda <span class="op">=</span> QDA(store_covariance<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qda.fit(XX_train, L_train))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>qda.means_, qda.priors_</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'0의 공분산 행렬 : </span><span class="ch">\n</span><span class="sc">{</span>qda<span class="sc">.</span>covariance_[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'1의 공분산 행렬 : </span><span class="ch">\n</span><span class="sc">{</span>qda<span class="sc">.</span>covariance_[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>QuadraticDiscriminantAnalysis(store_covariance=True)
+0의 공분산 행렬 : 
+[[ 1.50662277 -0.03924806]
+ [-0.03924806  1.53559498]]
+1의 공분산 행렬 : 
+[[ 1.51700576 -0.02787349]
+ [-0.02787349  1.49026815]]</code></pre>
+</div>
+</div>
+<p><code>-</code> QDA로 예측한 결과 및 혼합행렬 + 예측 정확도</p>
+<div id="9020f7fb-2847-46d1-86a7-cda415d2266e" class="cell" data-execution_count="91">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>qda_pred <span class="op">=</span> qda.predict(XX_test)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print(qda_pred)</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_table(qda_pred, L_test))</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>np.mean(qda_pred <span class="op">==</span> L_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Truth      Down   Up
+Predicted           
+Down         30   20
+Up           81  121</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="91">
+<pre><code>0.5992063492063492</code></pre>
+</div>
+</div>
+</section>
+<section id="naive-bayes" class="level3">
+<h3 class="anchored" data-anchor-id="naive-bayes">4. Naive Bayes</h3>
+<ul>
+<li>Naive 베이즈를 이용한 결과</li>
+<li>여기에서 theta는 각 종별 평균벡터 var_는 공분산 행렬의 대각값들을 의미(각 종별 분산)</li>
+</ul>
+<div id="bb401bb5-0957-4a8b-9996-6c13e1ab1e6b" class="cell" data-execution_count="97">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="bu">sum</span>(L_train<span class="op">==</span><span class="st">'Up'</span>)<span class="op">/</span><span class="bu">len</span>(L_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="97">
+<pre><code>0.5080160320641283</code></pre>
+</div>
+</div>
+<div id="be294e72-3e6a-4c20-9ce2-c4e42bcdf08c" class="cell" data-execution_count="99">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>NB <span class="op">=</span> GaussianNB()</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>rs <span class="op">=</span> NB.fit(XX_train, L_train)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">set</span>(L_train))</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rs)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Down,Up의 비율 : </span><span class="ch">\n</span><span class="sc">{</span>NB<span class="sc">.</span>class_prior_<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'각 종별 평균 벡터 : </span><span class="ch">\n</span><span class="sc">{</span>NB<span class="sc">.</span>theta_<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'공분산 행렬의 대각값(각 종별 분산) : </span><span class="ch">\n</span><span class="sc">{</span>NB<span class="sc">.</span>var_<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'Up', 'Down'}
+GaussianNB()
+Down,Up의 비율 : 
+[0.49198397 0.50801603]
+각 종별 평균 벡터 : 
+[[ 0.04279022  0.03389409]
+ [-0.03954635 -0.03132544]]
+공분산 행렬의 대각값(각 종별 분산) : 
+[[1.50355429 1.53246749]
+ [1.51401364 1.48732877]]</code></pre>
+</div>
+</div>
+<p><code>-</code> Naive 베이지를 이용한 예측</p>
+<ul>
+<li>혼합행렬의 결과</li>
+<li><code>Up</code>은 괜찮게 맞추는데 <code>Down</code>은 거의 맞추지 못함</li>
+</ul>
+<div id="2ab48998-f421-4afc-a1ef-dcfce186440b" class="cell" data-execution_count="100">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>nb_labels <span class="op">=</span> NB.predict(XX_test)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_table(nb_labels , L_test))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Truth      Down   Up
+Predicted           
+Down         29   20
+Up           82  121</code></pre>
+</div>
+</div>
+</section>
+<section id="knn-classifier" class="level3">
+<h3 class="anchored" data-anchor-id="knn-classifier">5. KNN classifier</h3>
+<p><code>-</code> 위의 데이터에 적용</p>
+<div id="3bea8d79-c568-48b6-bc4b-177ce6453cf7" class="cell" data-execution_count="103">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>knn1 <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>knn1.fit(XX_train , L_train)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>knn1_pred <span class="op">=</span> knn1.predict(XX_test)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"최근접 이웃 1개"</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_table(knn1_pred , L_test))</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>knn3 <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>knn3_pred <span class="op">=</span> knn3.fit(XX_train , L_train).predict(XX_test)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"최근접 이웃 3개"</span>)</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_table(knn3_pred , L_test))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>최근접 이웃 1개
+Truth      Down  Up
+Predicted          
+Down         43  58
+Up           68  83
+최근접 이웃 3개
+Truth      Down  Up
+Predicted          
+Down         48  55
+Up           63  86</code></pre>
+</div>
+</div>
+<p><code>-</code> 데이터를 불러오기</p>
+<ul>
+<li><code>No</code> 가 훨씬 많음</li>
+</ul>
+<div id="ca96ee39-ec09-4373-9274-9f26846bd460" class="cell" data-execution_count="106">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data loading</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>Caravan <span class="op">=</span> load_data(<span class="st">'Caravan'</span>)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>Purchase <span class="op">=</span> Caravan.Purchase</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Purchase.value_counts())</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>feature_df <span class="op">=</span> Caravan.drop(columns<span class="op">=</span>[<span class="st">'Purchase'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Purchase
+No     5474
+Yes     348
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p><code>-</code> 표준화</p>
+<ul>
+<li>with_mean=True : 평균 1</li>
+<li>with_std=True : 표준편차 1</li>
+<li>표준화를 해서 표준화된 값을 <code>X_std</code>에 저장 후</li>
+<li>데이터프레임으로 변환</li>
+<li>결과 : 모두 표준편차가 1에 가깝게 표준화 됨</li>
+</ul>
+<div id="6d5d35eb-488b-40fb-bc1d-79cc3051b864" class="cell" data-execution_count="111">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler(with_mean<span class="op">=</span><span class="va">True</span>, with_std<span class="op">=</span><span class="va">True</span>, copy<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>scaler.fit(feature_df)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>X_std <span class="op">=</span> scaler.transform(feature_df)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>feature_std <span class="op">=</span> pd.DataFrame(X_std , columns<span class="op">=</span>feature_df.columns)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>feature_std.std()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="111">
+<pre><code>MOSTYPE     1.000086
+MAANTHUI    1.000086
+MGEMOMV     1.000086
+MGEMLEEF    1.000086
+MOSHOOFD    1.000086
+              ...   
+AZEILPL     1.000086
+APLEZIER    1.000086
+AFIETS      1.000086
+AINBOED     1.000086
+ABYSTAND    1.000086
+Length: 85, dtype: float64</code></pre>
+</div>
+</div>
+<p><code>-</code> KNN을 이용해서 분류를 하고, 테스트 데이터에서 성능을 확인</p>
+<p><code>-</code> No는 잘 맞추는데 Yes는 못맞춤..</p>
+<div id="c5f7f9e4-68a8-4e87-8c7a-af19f8baa90b" class="cell" data-execution_count="115">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>(X_train, X_test, y_train, y_test) <span class="op">=</span> train_test_split(feature_std, Purchase, test_size<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>knn1 <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>knn1_pred <span class="op">=</span> knn1.fit(X_train , y_train).predict(X_test)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>np.mean(y_test <span class="op">!=</span> knn1_pred), np.mean(y_test <span class="op">!=</span> <span class="st">"No"</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_table(knn1_pred , y_test))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Truth       No  Yes
+Predicted          
+No         881   58
+Yes         52    9</code></pre>
+</div>
+</div>
+<p><code>-</code> 이웃수를 증가시켜도 Yes에 대한 정확도가 증가하지 않음</p>
+<div id="22458c7c-4126-4ff2-8124-c91707b919ba" class="cell" data-execution_count="119">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> K <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">6</span>):</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>K)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  knn_pred <span class="op">=</span> knn.fit(X_train , y_train).predict(X_test)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  C <span class="op">=</span> confusion_table(knn_pred, y_test)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  templ <span class="op">=</span> <span class="st">'K=</span><span class="sc">{0:d}</span><span class="st">: # predicted to rent: </span><span class="sc">{1:&gt;2}</span><span class="st">,'</span> <span class="op">+</span><span class="st">' # who did rent </span><span class="sc">{2:d}</span><span class="st">, accuracy </span><span class="sc">{3:.1%}</span><span class="st">'</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  pred <span class="op">=</span> C.loc[<span class="st">'Yes'</span>].<span class="bu">sum</span>()</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  did_rent <span class="op">=</span> C.loc[<span class="st">'Yes'</span>,<span class="st">'Yes'</span>]</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(templ.<span class="bu">format</span>(K, pred, did_rent, did_rent <span class="op">/</span> pred))</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># rent를 한 사람을 맞춘 것에 대한 정확도임</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>K=1: # predicted to rent: 61, # who did rent 9, accuracy 14.8%
+K=2: # predicted to rent:  6, # who did rent 1, accuracy 16.7%
+K=3: # predicted to rent: 19, # who did rent 3, accuracy 15.8%
+K=4: # predicted to rent:  3, # who did rent 0, accuracy 0.0%
+K=5: # predicted to rent:  7, # who did rent 1, accuracy 14.3%</code></pre>
+</div>
+</div>
+<p><code>-</code> 로지스틱 회귀분석과의 비교</p>
+<div id="8b866a87-3214-404f-8b16-2900d4e4430d" class="cell" data-execution_count="122">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>logit <span class="op">=</span> LogisticRegression(C<span class="op">=</span><span class="fl">1e10</span> , solver<span class="op">=</span><span class="st">'liblinear'</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>logit.fit(X_train , y_train)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>logit_pred <span class="op">=</span> logit.predict_proba(X_test)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"말안되는 거, 확률이 5보다 클 수 없음 : Yes 0개"</span>)</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>logit_labels <span class="op">=</span> np.where(logit_pred[:,<span class="dv">1</span>] <span class="op">&gt;</span> <span class="dv">5</span>, <span class="st">'Yes'</span>, <span class="st">'No'</span>)</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_table(logit_labels , y_test))</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"확률 0.25 이상이면 Yes로 판단"</span>)</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>logit_labels <span class="op">=</span> np.where(logit_pred[:,<span class="dv">1</span>]<span class="op">&gt;</span><span class="fl">0.25</span>, <span class="st">'Yes'</span>, <span class="st">'No'</span>)</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_table(logit_labels , y_test))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>말안되는 거, 확률이 5보다 클 수 없음 : Yes 0개
+Truth       No  Yes
+Predicted          
+No         933   67
+Yes          0    0
+확률 0.25 이상이면 Yes로 판단
+Truth       No  Yes
+Predicted          
+No         913   58
+Yes         20    9</code></pre>
+</div>
+</div>
+</section>
+<section id="제약-및-다양한-회귀분석" class="level3">
+<h3 class="anchored" data-anchor-id="제약-및-다양한-회귀분석">6. 제약 및 다양한 회귀분석</h3>
+<p><code>-</code> 데이터 불러오기</p>
+<div id="ef201156-0721-4ff7-b0de-424af65b1862" class="cell" data-execution_count="123">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data loading</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>Bike <span class="op">=</span> load_data(<span class="st">'Bikeshare'</span>)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>Bike.shape, Bike.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="123">
+<pre><code>((8645, 15),
+ Index(['season', 'mnth', 'day', 'hr', 'holiday', 'weekday', 'workingday',
+        'weathersit', 'temp', 'atemp', 'hum', 'windspeed', 'casual',
+        'registered', 'bikers'],
+       dtype='object'))</code></pre>
+</div>
+</div>
+<p><code>-</code> 일반 OLS</p>
+<ul>
+<li>선형 회귀 모델</li>
+<li>최소제곱법</li>
+</ul>
+<p><code>-</code> 가변수 인코딩 방식 1)</p>
+<ul>
+<li>범주형 변수 인코딩필요</li>
+<li>하나의 범주를 기준으로 나머지 범주 0,1로 표현</li>
+<li>마지막 범주는 생략</li>
+</ul>
+<div id="8e418f10-44c1-455b-a606-58f521f3a8e2" class="cell" data-execution_count="124">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> MS([<span class="st">'mnth'</span>, <span class="st">'hr'</span>, <span class="st">'workingday'</span>, <span class="st">'temp'</span>, <span class="st">'weathersit'</span>]).fit_transform(Bike)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> Bike[<span class="st">'bikers'</span>]</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>M_lm <span class="op">=</span> sm.OLS(Y, X).fit()</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summarize(M_lm))</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 가변수의 경우 범주의 수 - 1개의 더미 변수를 구성</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                 coef  std err       t  P&gt;|t|
+intercept                    -68.6317    5.307 -12.932  0.000
+mnth[Feb]                      6.8452    4.287   1.597  0.110
+mnth[March]                   16.5514    4.301   3.848  0.000
+mnth[April]                   41.4249    4.972   8.331  0.000
+mnth[May]                     72.5571    5.641  12.862  0.000
+mnth[June]                    67.8187    6.544  10.364  0.000
+mnth[July]                    45.3245    7.081   6.401  0.000
+mnth[Aug]                     53.2430    6.640   8.019  0.000
+mnth[Sept]                    66.6783    5.925  11.254  0.000
+mnth[Oct]                     75.8343    4.950  15.319  0.000
+mnth[Nov]                     60.3100    4.610  13.083  0.000
+mnth[Dec]                     46.4577    4.271  10.878  0.000
+hr[1]                        -14.5793    5.699  -2.558  0.011
+hr[2]                        -21.5791    5.733  -3.764  0.000
+hr[3]                        -31.1408    5.778  -5.389  0.000
+hr[4]                        -36.9075    5.802  -6.361  0.000
+hr[5]                        -24.1355    5.737  -4.207  0.000
+hr[6]                         20.5997    5.704   3.612  0.000
+hr[7]                        120.0931    5.693  21.095  0.000
+hr[8]                        223.6619    5.690  39.310  0.000
+hr[9]                        120.5819    5.693  21.182  0.000
+hr[10]                        83.8013    5.705  14.689  0.000
+hr[11]                       105.4234    5.722  18.424  0.000
+hr[12]                       137.2837    5.740  23.916  0.000
+hr[13]                       136.0359    5.760  23.617  0.000
+hr[14]                       126.6361    5.776  21.923  0.000
+hr[15]                       132.0865    5.780  22.852  0.000
+hr[16]                       178.5206    5.772  30.927  0.000
+hr[17]                       296.2670    5.749  51.537  0.000
+hr[18]                       269.4409    5.736  46.976  0.000
+hr[19]                       186.2558    5.714  32.596  0.000
+hr[20]                       125.5492    5.704  22.012  0.000
+hr[21]                        87.5537    5.693  15.378  0.000
+hr[22]                        59.1226    5.689  10.392  0.000
+hr[23]                        26.8376    5.688   4.719  0.000
+workingday                     1.2696    1.784   0.711  0.477
+temp                         157.2094   10.261  15.321  0.000
+weathersit[cloudy/misty]     -12.8903    1.964  -6.562  0.000
+weathersit[heavy rain/snow] -109.7446   76.667  -1.431  0.152
+weathersit[light rain/snow]  -66.4944    2.965 -22.425  0.000</code></pre>
+</div>
+</div>
+<p><code>-</code> 가변수 인코딩 방식 2) 합 제약</p>
+<ul>
+<li>모든 계수들의 합이 0이 되도록</li>
+<li>마지막 계수는 나머지 계수들의 합의 음의 값</li>
+</ul>
+<div id="201ea90e-49e7-475e-b5a3-8f4a655bfd7e" class="cell" data-execution_count="128">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>hr_encode <span class="op">=</span> contrast(<span class="st">'hr'</span>, <span class="st">'sum'</span>)     <span class="co"># 합에 대한 제약을 검</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>mnth_encode <span class="op">=</span> contrast(<span class="st">'mnth'</span>, <span class="st">'sum'</span>) <span class="co"># 합에 대한 제약을 검</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> MS([mnth_encode, hr_encode, <span class="st">'workingday'</span>,<span class="st">'temp'</span>, <span class="st">'weathersit'</span>]).fit_transform(Bike)</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>M2_lm <span class="op">=</span> sm.OLS(Y, X2).fit()</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>S2 <span class="op">=</span> summarize(M2_lm)</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(S2)</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 마지막 범주의 계수는 나머지 계수들의 합에 음수를 취함</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                 coef  std err       t  P&gt;|t|
+intercept                     73.5974    5.132  14.340  0.000
+mnth[Jan]                    -46.0871    4.085 -11.281  0.000
+mnth[Feb]                    -39.2419    3.539 -11.088  0.000
+mnth[March]                  -29.5357    3.155  -9.361  0.000
+mnth[April]                   -4.6622    2.741  -1.701  0.089
+mnth[May]                     26.4700    2.851   9.285  0.000
+mnth[June]                    21.7317    3.465   6.272  0.000
+mnth[July]                    -0.7626    3.908  -0.195  0.845
+mnth[Aug]                      7.1560    3.535   2.024  0.043
+mnth[Sept]                    20.5912    3.046   6.761  0.000
+mnth[Oct]                     29.7472    2.700  11.019  0.000
+mnth[Nov]                     14.2229    2.860   4.972  0.000
+hr[0]                        -96.1420    3.955 -24.307  0.000
+hr[1]                       -110.7213    3.966 -27.916  0.000
+hr[2]                       -117.7212    4.016 -29.310  0.000
+hr[3]                       -127.2828    4.081 -31.191  0.000
+hr[4]                       -133.0495    4.117 -32.319  0.000
+hr[5]                       -120.2775    4.037 -29.794  0.000
+hr[6]                        -75.5424    3.992 -18.925  0.000
+hr[7]                         23.9511    3.969   6.035  0.000
+hr[8]                        127.5199    3.950  32.284  0.000
+hr[9]                         24.4399    3.936   6.209  0.000
+hr[10]                       -12.3407    3.936  -3.135  0.002
+hr[11]                         9.2814    3.945   2.353  0.019
+hr[12]                        41.1417    3.957  10.397  0.000
+hr[13]                        39.8939    3.975  10.036  0.000
+hr[14]                        30.4940    3.991   7.641  0.000
+hr[15]                        35.9445    3.995   8.998  0.000
+hr[16]                        82.3786    3.988  20.655  0.000
+hr[17]                       200.1249    3.964  50.488  0.000
+hr[18]                       173.2989    3.956  43.806  0.000
+hr[19]                        90.1138    3.940  22.872  0.000
+hr[20]                        29.4071    3.936   7.471  0.000
+hr[21]                        -8.5883    3.933  -2.184  0.029
+hr[22]                       -37.0194    3.934  -9.409  0.000
+workingday                     1.2696    1.784   0.711  0.477
+temp                         157.2094   10.261  15.321  0.000
+weathersit[cloudy/misty]     -12.8903    1.964  -6.562  0.000
+weathersit[heavy rain/snow] -109.7446   76.667  -1.431  0.152
+weathersit[light rain/snow]  -66.4944    2.965 -22.425  0.000</code></pre>
+</div>
+</div>
+<p><code>-</code> 두 방법의 모델의 차이</p>
+<ul>
+<li>예측값 차이의 제곱합 계산</li>
+<li>거의 0에 근사</li>
+<li>예측력은 동일다하 할 수 있음</li>
+</ul>
+<div id="af41d916-7a72-47af-88e5-0ebb95f2c816" class="cell" data-execution_count="130">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>np.<span class="bu">sum</span>((M_lm.fittedvalues <span class="op">-</span> M2_lm.fittedvalues)<span class="op">**</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="130">
+<pre><code>1.6273003592224878e-19</code></pre>
+</div>
+</div>
+<p><code>-</code> <code>mnth</code>의 [Dec] 계수 계산</p>
+<ul>
+<li>[Dec] 의 계수가 없음</li>
+<li>나머지 값들의 음수를 취해 마지막 계수 생성</li>
+<li>합 거의 0에 근사</li>
+</ul>
+<div id="96f1d85f-c715-4ef7-9a17-937d4b55e05e" class="cell" data-execution_count="132">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>coef_month <span class="op">=</span> S2[S2.index.<span class="bu">str</span>.contains(<span class="st">'mnth'</span>)][<span class="st">'coef'</span>]</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_month)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 제약조건이 걸린 계수 확인</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>months <span class="op">=</span> Bike[<span class="st">'mnth'</span>].dtype.categories</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>coef_month <span class="op">=</span> pd.concat([coef_month, pd.Series([<span class="op">-</span>coef_month.<span class="bu">sum</span>()], index<span class="op">=</span>[<span class="st">'mnth[Dec]'</span>])</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_month)</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(coef_month))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>mnth[Jan]     -46.0871
+mnth[Feb]     -39.2419
+mnth[March]   -29.5357
+mnth[April]    -4.6622
+mnth[May]      26.4700
+mnth[June]     21.7317
+mnth[July]     -0.7626
+mnth[Aug]       7.1560
+mnth[Sept]     20.5912
+mnth[Oct]      29.7472
+mnth[Nov]      14.2229
+Name: coef, dtype: float64
+mnth[Jan]     -46.0871
+mnth[Feb]     -39.2419
+mnth[March]   -29.5357
+mnth[April]    -4.6622
+mnth[May]      26.4700
+mnth[June]     21.7317
+mnth[July]     -0.7626
+mnth[Aug]       7.1560
+mnth[Sept]     20.5912
+mnth[Oct]      29.7472
+mnth[Nov]      14.2229
+mnth[Dec]       0.3705
+dtype: float64
+1.4210854715202004e-14</code></pre>
+</div>
+</div>
+<p><code>-</code> <code>mnth</code>(월) 에 대응되는 계수들을 선도표로 연결해서 시각화</p>
+<div id="ae558f1b-f02b-4933-a06b-e8d196f21c0c" class="cell" data-execution_count="133">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>fig_month , ax_month <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">8</span>))</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>x_month <span class="op">=</span> np.arange(coef_month.shape[<span class="dv">0</span>])</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>ax_month.plot(x_month , coef_month , marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>ax_month.set_xticks(x_month)</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>ax_month.set_xticklabels([l[<span class="dv">5</span>] <span class="cf">for</span> l <span class="kw">in</span> coef_month.index], fontsize</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>ax_month.set_xlabel(<span class="st">'Month'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>ax_month.set_ylabel(<span class="st">'Coefficient'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3.Classification_files/figure-html/cell-35-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>-</code> 시간에 대응되는 계수들을 선도표로 연결해서 시각화</p>
+<div id="317d7285-e375-4d81-a7f4-18bb81942a33" class="cell" data-execution_count="134">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>coef_hr <span class="op">=</span> S2[S2.index.<span class="bu">str</span>.contains(<span class="st">'hr'</span>)][<span class="st">'coef'</span>]</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>coef_hr <span class="op">=</span> coef_hr.reindex([<span class="st">'hr[</span><span class="sc">{0}</span><span class="st">]'</span>.<span class="bu">format</span>(h) <span class="cf">for</span> h <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">23</span>)])</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>coef_hr <span class="op">=</span> pd.concat([coef_hr, pd.Series([<span class="op">-</span>coef_hr.<span class="bu">sum</span>()], index<span class="op">=</span>[<span class="st">'hr[23]'</span>])</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>fig_hr , ax_hr <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">8</span>))</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>x_hr <span class="op">=</span> np.arange(coef_hr.shape[<span class="dv">0</span>])</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>ax_hr.plot(x_hr , coef_hr , marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>ax_hr.set_xticks(x_hr[::<span class="dv">2</span>])</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>ax_hr.set_xticklabels(<span class="bu">range</span>(<span class="dv">24</span>)[::<span class="dv">2</span>], fontsize <span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>ax_hr.set_xlabel(<span class="st">'Hour'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>ax_hr.set_ylabel(<span class="st">'Coefficient'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3.Classification_files/figure-html/cell-36-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>-</code> 포아송 분포를 가정하고 평균을 추정</p>
+<ul>
+<li>월별, 시간에 딸ㄴ 계수의 값을 선도표화</li>
+</ul>
+<div id="3c1dff27-0b7b-4a7d-89ec-8e225f56a8bc" class="cell" data-execution_count="135">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>M_pois <span class="op">=</span> sm.GLM(Y, X2, family<span class="op">=</span>sm.families.Poisson()).fit()</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>S_pois <span class="op">=</span> summarize(M_pois)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>coef_month <span class="op">=</span> S_pois[S_pois.index.<span class="bu">str</span>.contains(<span class="st">'mnth'</span>)][<span class="st">'coef'</span>]</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>coef_month <span class="op">=</span> pd.concat([coef_month ,</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>pd.Series([<span class="op">-</span>coef_month.<span class="bu">sum</span>()],</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>index<span class="op">=</span>[<span class="st">'mnth[Dec]'</span>])])</span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>coef_hr <span class="op">=</span> S_pois[S_pois.index.<span class="bu">str</span>.contains(<span class="st">'hr'</span>)][<span class="st">'coef'</span>]</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>coef_hr <span class="op">=</span> pd.concat([coef_hr ,</span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>pd.Series([<span class="op">-</span>coef_hr.<span class="bu">sum</span>()],</span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>index<span class="op">=</span>[<span class="st">'hr[23]'</span>])])</span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a>fig_pois , (ax_month , ax_hr) <span class="op">=</span> subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>,<span class="dv">8</span>))</span>
+<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a>ax_month.plot(x_month , coef_month , marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb68-14"><a href="#cb68-14" aria-hidden="true" tabindex="-1"></a>ax_month.set_xticks(x_month)</span>
+<span id="cb68-15"><a href="#cb68-15" aria-hidden="true" tabindex="-1"></a>ax_month.set_xticklabels([l[<span class="dv">5</span>] <span class="cf">for</span> l <span class="kw">in</span> coef_month.index], fontsize</span>
+<span id="cb68-16"><a href="#cb68-16" aria-hidden="true" tabindex="-1"></a><span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb68-17"><a href="#cb68-17" aria-hidden="true" tabindex="-1"></a>ax_month.set_xlabel(<span class="st">'Month'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb68-18"><a href="#cb68-18" aria-hidden="true" tabindex="-1"></a>ax_month.set_ylabel(<span class="st">'Coefficient'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb68-19"><a href="#cb68-19" aria-hidden="true" tabindex="-1"></a>ax_hr.plot(x_hr , coef_hr , marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb68-20"><a href="#cb68-20" aria-hidden="true" tabindex="-1"></a>ax_hr.set_xticklabels(<span class="bu">range</span>(<span class="dv">24</span>)[::<span class="dv">2</span>], fontsize <span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb68-21"><a href="#cb68-21" aria-hidden="true" tabindex="-1"></a>ax_hr.set_xlabel(<span class="st">'Hour'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb68-22"><a href="#cb68-22" aria-hidden="true" tabindex="-1"></a>ax_hr.set_ylabel(<span class="st">'Coefficient'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_154232/2887756137.py:20: UserWarning: FixedFormatter should only be used together with FixedLocator
+  ax_hr.set_xticklabels(range(24)[::2], fontsize =20)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3.Classification_files/figure-html/cell-37-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>-</code> 일반 선형회귀직선과 포아송 분포를 가정한 평균직선을 비교</p>
+<div id="348efc15-5016-4871-9949-09645037d4af" class="cell" data-execution_count="136">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>ax.scatter(M2_lm.fittedvalues ,</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>M_pois.fittedvalues ,</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>s<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Linear Regression Fit'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Poisson Regression Fit'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>ax.axline([<span class="dv">0</span>,<span class="dv">0</span>], c<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>linestyle<span class="op">=</span><span class="st">'--'</span>, slope<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3.Classification_files/figure-html/cell-38-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>
