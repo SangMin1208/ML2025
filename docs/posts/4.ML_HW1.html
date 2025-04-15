@@ -22,10 +22,44 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -68,7 +102,39 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -151,8 +217,816 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<section id="캐글에서-설명변수의-개수가-58개이며-반응변수가-연속형인-데이터를-하나-선택하고-아래-정보를-제출하시오." class="level3">
+<h3 class="anchored" data-anchor-id="캐글에서-설명변수의-개수가-58개이며-반응변수가-연속형인-데이터를-하나-선택하고-아래-정보를-제출하시오.">1. 캐글에서 설명변수의 개수가 5~8개이며 반응변수가 연속형인 데이터를 하나 선택하고 아래 정보를 제출하시오.</h3>
+<section id="데이터-이름과-변수명-데이터-크기" class="level4">
+<h4 class="anchored" data-anchor-id="데이터-이름과-변수명-데이터-크기">1) 데이터 이름과 변수명, 데이터 크기</h4>
+<p><code>-</code> <strong>데이터 이름</strong> : <strong>Sleep Time Prediction</strong></p>
+<div id="1ef9b7bc-e0de-4e33-969c-7e9119ad89ed" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="8a27fc44-5eec-433c-ab8c-f3e158df0d35" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Sleep <span class="op">=</span> pd.read_csv(<span class="st">"sleeptime_prediction_dataset.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> <strong>변수명</strong></p>
+<ul>
+<li><code>WorkoutTime</code> : <strong>활동</strong>에 사용한 시간 (hours/day)</li>
+<li><code>ReadingTime</code> : <strong>독서</strong>에 사용한 시간 (hours/day)</li>
+<li><code>PhoneTime</code> : <strong>휴대폰</strong> 사용 시간 (hours/day)</li>
+<li><code>WorkHours</code> : <strong>일</strong>에 사용한 시간 (hours/day)</li>
+<li><code>CaffeineIntake</code> : <strong>카페인</strong> 소비량 (mg/day)</li>
+<li><code>RelaxationTime</code> : <strong>휴식</strong>에 사용한 시간 (hours/day)</li>
+<li><code>SleepTime</code> : <strong>수면</strong>에 사용한 총 시간 (hours/night)</li>
+</ul>
+<div id="e80d912a-8bdd-49d0-be4f-e9b001b51ad9" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Sleep.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>Index(['WorkoutTime', 'ReadingTime', 'PhoneTime', 'WorkHours',
+       'CaffeineIntake', 'RelaxationTime', 'SleepTime'],
+      dtype='object')</code></pre>
+</div>
+</div>
+<p><code>-</code> <strong>데이터 크기</strong></p>
+<div id="df8ac729-2177-4105-a813-597d29ae0e7f" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Sleep.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<pre><code>(2000, 7)</code></pre>
+</div>
+</div>
+<div id="7c49f2a4-46ac-42a1-b741-e760f1269bd3" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"행(데이터)의 수: </span><span class="sc">{</span>Sleep<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"열(변수)의 수: </span><span class="sc">{</span>Sleep<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>행(데이터)의 수: 2000
+열(변수)의 수: 7</code></pre>
+</div>
+</div>
+</section>
+<section id="각-변수별-기초-통계량평균과-분산-범주형인-경우-범주별-비율" class="level4">
+<h4 class="anchored" data-anchor-id="각-변수별-기초-통계량평균과-분산-범주형인-경우-범주별-비율">2) 각 변수별 기초 통계량(평균과 분산, 범주형인 경우 범주별 비율)</h4>
+<p><code>-</code> 모든 변수에 타이빙 연속형이고, null 값이 없는 것을 확인</p>
+<div id="50e8766c-f8cc-4c1e-8149-8e8136a75846" class="cell" data-execution_count="78">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Sleep.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 2000 entries, 0 to 1999
+Data columns (total 7 columns):
+ #   Column          Non-Null Count  Dtype  
+---  ------          --------------  -----  
+ 0   WorkoutTime     2000 non-null   float64
+ 1   ReadingTime     2000 non-null   float64
+ 2   PhoneTime       2000 non-null   float64
+ 3   WorkHours       2000 non-null   float64
+ 4   CaffeineIntake  2000 non-null   float64
+ 5   RelaxationTime  2000 non-null   float64
+ 6   SleepTime       2000 non-null   float64
+dtypes: float64(7)
+memory usage: 109.5 KB</code></pre>
+</div>
+</div>
+<p><code>-</code> 각 변수의 평균과 분산 출력</p>
+<div id="4861fb71-e4ad-4840-b07e-24b3cb060f76" class="cell" data-execution_count="81">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>summary_stats <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Mean'</span>: Sleep.mean(),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Variance'</span>: Sleep.var()</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summary_stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      Mean     Variance
+WorkoutTime       1.495915     0.768497
+ReadingTime       0.992785     0.333278
+PhoneTime         2.985195     1.326588
+WorkHours         6.926945     2.971634
+CaffeineIntake  147.493780  7165.815344
+RelaxationTime    1.010955     0.339445
+SleepTime         4.884375     4.116403</code></pre>
+</div>
+</div>
+<p><code>-</code> 추가적인 기초 통계량</p>
+<div id="9b5fc3c1-d26f-46eb-a04a-5bbe95c55974" class="cell" data-execution_count="83">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Sleep.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="83">
+<div>
 
 
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">WorkoutTime</th>
+<th data-quarto-table-cell-role="th">ReadingTime</th>
+<th data-quarto-table-cell-role="th">PhoneTime</th>
+<th data-quarto-table-cell-role="th">WorkHours</th>
+<th data-quarto-table-cell-role="th">CaffeineIntake</th>
+<th data-quarto-table-cell-role="th">RelaxationTime</th>
+<th data-quarto-table-cell-role="th">SleepTime</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>2000.000000</td>
+<td>2000.000000</td>
+<td>2000.000000</td>
+<td>2000.000000</td>
+<td>2000.000000</td>
+<td>2000.000000</td>
+<td>2000.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>1.495915</td>
+<td>0.992785</td>
+<td>2.985195</td>
+<td>6.926945</td>
+<td>147.493780</td>
+<td>1.010955</td>
+<td>4.884375</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.876639</td>
+<td>0.577303</td>
+<td>1.151776</td>
+<td>1.723843</td>
+<td>84.651139</td>
+<td>0.582619</td>
+<td>2.028892</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>0.010000</td>
+<td>0.000000</td>
+<td>1.000000</td>
+<td>4.000000</td>
+<td>0.020000</td>
+<td>0.000000</td>
+<td>0.150000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>0.710000</td>
+<td>0.500000</td>
+<td>1.990000</td>
+<td>5.440000</td>
+<td>75.980000</td>
+<td>0.510000</td>
+<td>3.840000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>1.520000</td>
+<td>0.990000</td>
+<td>2.965000</td>
+<td>6.910000</td>
+<td>146.010000</td>
+<td>1.010000</td>
+<td>4.600000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>2.250000</td>
+<td>1.500000</td>
+<td>3.960000</td>
+<td>8.422500</td>
+<td>218.902500</td>
+<td>1.530000</td>
+<td>5.470000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>3.000000</td>
+<td>2.000000</td>
+<td>5.000000</td>
+<td>10.000000</td>
+<td>299.850000</td>
+<td>2.000000</td>
+<td>19.810000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="반응변수와-각-변수들-간의-산점도행렬-형태-추천" class="level4">
+<h4 class="anchored" data-anchor-id="반응변수와-각-변수들-간의-산점도행렬-형태-추천">3) 반응변수와 각 변수들 간의 산점도(행렬 형태 추천)</h4>
+<div id="3f29e5db-faf7-4c0d-8b18-91a411911c38" class="cell" data-execution_count="87">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 설명변수들</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> [<span class="st">'WorkoutTime'</span>, <span class="st">'ReadingTime'</span>, <span class="st">'PhoneTime'</span>, <span class="st">'WorkHours'</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">'CaffeineIntake'</span>, <span class="st">'RelaxationTime'</span>]</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 서브플롯 설정</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">8</span>)) </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.flatten() </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 각 변수에 대해 산점도 그리기</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, feature <span class="kw">in</span> <span class="bu">enumerate</span>(features):</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    sns.scatterplot(x<span class="op">=</span>Sleep[feature], y<span class="op">=</span>Sleep[<span class="st">'SleepTime'</span>], ax<span class="op">=</span>axes[i])</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    axes[i].set_title(<span class="ss">f'SleepTime vs </span><span class="sc">{</span>feature<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 여백 자동 조정</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"SleepTime과 각 변수 간 산점도 (2x3)"</span>, y<span class="op">=</span><span class="fl">1.03</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="4.ML_HW1_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="다음을-시행하시오-모두-다-파이썬이나-r-이용" class="level3">
+<h3 class="anchored" data-anchor-id="다음을-시행하시오-모두-다-파이썬이나-r-이용">2. 다음을 시행하시오 (모두 다 파이썬이나 R 이용)</h3>
+<section id="모든-변수를-이용하여-회귀분석을-시행하고-모형의-유의성을-유의수준-0.05에서-검정하시오" class="level4">
+<h4 class="anchored" data-anchor-id="모든-변수를-이용하여-회귀분석을-시행하고-모형의-유의성을-유의수준-0.05에서-검정하시오">1) 모든 변수를 이용하여 회귀분석을 시행하고 모형의 유의성을 유의수준 0.05에서 검정하시오</h4>
+<div id="dfd90dab-0674-43fd-a234-55d5f111d3cb" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 독립변수(X)와 종속변수(y) 로 분리</p>
+<div id="2354737f-4ac7-4c5e-864e-02f51a520ffc" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> Sleep.drop(columns<span class="op">=</span>[<span class="st">'SleepTime'</span>])</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> Sleep[<span class="st">'SleepTime'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 절편을 위한 상수항 추가</p>
+<div id="9be044f2-20d8-4db9-bff6-eecd46f405c2" class="cell" data-execution_count="131">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> sm.add_constant(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 상수항 이름 const에서 intercept로 변경</p>
+<div id="f90cf3ec-9146-4e21-b9bc-5e506792d575" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>X.columns<span class="op">=</span> [<span class="st">'intercept'</span>,<span class="st">'WorkoutTime'</span>, <span class="st">'ReadingTime'</span>, <span class="st">'PhoneTime'</span>, <span class="st">'WorkHours'</span>,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">'CaffeineIntake'</span>, <span class="st">'RelaxationTime'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="df1c0796-953d-4f41-80b1-793b44e532d7" class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X[:<span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   intercept  WorkoutTime  ReadingTime  PhoneTime  WorkHours  CaffeineIntake  \
+0        1.0         1.12         0.52       3.29       7.89          216.08   
+1        1.0         2.85         0.49       4.22       5.03          206.18   
+2        1.0         2.20         1.81       4.04       9.23           28.73   
+3        1.0         1.80         0.50       1.62       7.68          276.77   
+4        1.0         0.47         0.54       1.60       4.94          170.54   
+
+   RelaxationTime  
+0            0.75  
+1            0.67  
+2            0.35  
+3            1.21  
+4            0.95  </code></pre>
+</div>
+</div>
+<p><code>-</code> F-statistic : 전체 회귀모형이 통계적으로 유의한지 검정하는 통계량</p>
+<ul>
+<li><code>Prob (F-statistic)</code> : F-검정의 <strong>p-value</strong></li>
+<li>이 값이 (2.71e-127) <strong>매우 작으므로 전체 모형이 유의</strong> 하다고 할 수 있다.</li>
+</ul>
+<div id="7c97fe78-bb01-44b1-9716-78284932ec52" class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.OLS(y, X)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> model.fit()</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:              SleepTime   R-squared:                       0.261
+Model:                            OLS   Adj. R-squared:                  0.259
+Method:                 Least Squares   F-statistic:                     117.5
+Date:                Tue, 15 Apr 2025   Prob (F-statistic):          2.71e-127
+Time:                        11:13:58   Log-Likelihood:                -3949.4
+No. Observations:                2000   AIC:                             7913.
+Df Residuals:                    1993   BIC:                             7952.
+Df Model:                           6                                         
+Covariance Type:            nonrobust                                         
+==================================================================================
+                     coef    std err          t      P&gt;|t|      [0.025      0.975]
+----------------------------------------------------------------------------------
+intercept          7.8462      0.231     33.973      0.000       7.393       8.299
+WorkoutTime        0.4768      0.045     10.672      0.000       0.389       0.564
+ReadingTime        0.2102      0.068      3.104      0.002       0.077       0.343
+PhoneTime         -0.5612      0.034    -16.520      0.000      -0.628      -0.495
+WorkHours         -0.3601      0.023    -15.857      0.000      -0.405      -0.316
+CaffeineIntake    -0.0014      0.000     -2.976      0.003      -0.002      -0.000
+RelaxationTime     0.4837      0.067      7.193      0.000       0.352       0.616
+==============================================================================
+Omnibus:                     2315.894   Durbin-Watson:                   2.023
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           157684.352
+Skew:                           6.152   Prob(JB):                         0.00
+Kurtosis:                      44.723   Cond. No.                     1.02e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.02e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.</code></pre>
+</div>
+</div>
+</section>
+<section id="hatsigma2-sum_i1nfrachaty_i-y_i2n-p-1를-구하시오.-모든-변수들과-절편을-포함한-회귀분석에서의-예측을-이용하며-p는-사용한-모든-변수들의-개수임." class="level4">
+<h4 class="anchored" data-anchor-id="hatsigma2-sum_i1nfrachaty_i-y_i2n-p-1를-구하시오.-모든-변수들과-절편을-포함한-회귀분석에서의-예측을-이용하며-p는-사용한-모든-변수들의-개수임.">2) <span class="math inline">\(\hat{\sigma^2} = \sum_{i=1}^{n}\frac{(\hat{y}_i-y_i)^2}{n-p-1}\)</span>를 구하시오. 모든 변수들과 절편을 포함한 회귀분석에서의 예측을 이용하며 <span class="math inline">\(p\)</span>는 사용한 모든 변수들의 개수임.</h4>
+<p><code>-</code> 예측값</p>
+<div id="58018d9d-b12b-4f6d-a043-91c55e55286a" class="cell" data-execution_count="55">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> results.fittedvalues</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> n, p 설정</p>
+<div id="15044757-6683-436c-b6a7-4fa4b9f77547" class="cell" data-execution_count="56">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(y)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> X.shape[<span class="dv">1</span>]<span class="op">-</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> <span class="math inline">\(\hat{\sigma^2}\)</span> 계산</p>
+<div id="c1171ec4-5603-49ae-ae63-1e14c1df5fd3" class="cell" data-execution_count="97">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sigma_squared_hat <span class="op">=</span> np.<span class="bu">sum</span>(results.resid<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (n<span class="op">-</span>p<span class="op">-</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> <span class="math inline">\(\hat{\sigma^2}\)</span> = 3.0497</p>
+<div id="0bba5e97-1723-4b83-a883-9054388af10c" class="cell" data-execution_count="98">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'추정된 sigma^2 : </span><span class="sc">{</span>sigma_squared_hat<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>추정된 sigma^2 : 3.0497</code></pre>
+</div>
+</div>
+</section>
+<section id="하나의-변수나-두-개의-변수를-사용하여-각-모형에서-c_prsshatsigma22p를-계산하고-결과를-산점도로-표시하시오가로축은-사용한-변수의-개수-세로축은-계산된-c_p값.-여기에서-rss는-회귀모형의-잔차곱합이며-p는-rss에서-사용한-변수들의-개수이며-하나의-변수를-사용하면-p개의-모형이-두-개의-변수를-사용하면-pp-1개의-모형이-고려될-수-있음산점도에-총-ppp-1개의-점이-찍혀야함" class="level4">
+<h4 class="anchored" data-anchor-id="하나의-변수나-두-개의-변수를-사용하여-각-모형에서-c_prsshatsigma22p를-계산하고-결과를-산점도로-표시하시오가로축은-사용한-변수의-개수-세로축은-계산된-c_p값.-여기에서-rss는-회귀모형의-잔차곱합이며-p는-rss에서-사용한-변수들의-개수이며-하나의-변수를-사용하면-p개의-모형이-두-개의-변수를-사용하면-pp-1개의-모형이-고려될-수-있음산점도에-총-ppp-1개의-점이-찍혀야함">3) 하나의 변수나 두 개의 변수를 사용하여 각 모형에서 <span class="math inline">\(C_p=RSS/\hat{\sigma^2}+2p^*\)</span>를 계산하고 결과를 산점도로 표시하시오(가로축은 사용한 변수의 개수, 세로축은 계산된 <span class="math inline">\(C_p^*\)</span>값). 여기에서 RSS는 회귀모형의 잔차곱합이며 <span class="math inline">\(p^*\)</span>는 RSS에서 사용한 변수들의 개수이며, 하나의 변수를 사용하면 <span class="math inline">\(p\)</span>개의 모형이 두 개의 변수를 사용하면 <span class="math inline">\(p(p-1)\)</span>개의 모형이 고려될 수 있음(산점도에 총 <span class="math inline">\(p+p(p-1))\)</span>개의 점이 찍혀야함)</h4>
+<p><code>-</code> 변수가 두개 일때는 p(p-1)/2 개의 점이 찍혀야하는것 아닌가요?..(중복제거)</p>
+<div id="e4c0e49c-f3a3-4054-b616-8503f4e0fa63" class="cell" data-execution_count="89">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="4b29353d-06ca-489a-adc9-9d8c1d0a3b03" class="cell" data-execution_count="107">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>cp_list <span class="op">=</span> []</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>pstar_list <span class="op">=</span> []</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>used_features <span class="op">=</span> []</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># === 변수 1개씩 사용하는 모형들 ===</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> var <span class="kw">in</span> features:</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    used_features.append(var)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> sm.add_constant(Sleep[[var]])  <span class="co"># 절편 포함</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> sm.OLS(y, X).fit()</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    rss <span class="op">=</span> <span class="bu">sum</span>((y<span class="op">-</span>model.fittedvalues)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    p_star <span class="op">=</span> <span class="dv">2</span>  <span class="co"># 변수 1개 + 절편</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    cp <span class="op">=</span> rss <span class="op">/</span> sigma_squared_hat <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> p_star</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    cp_list.append(cp)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    pstar_list.append(p_star)</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="co"># === 변수 2개씩 사용하는 모형들 ===</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> var1, var2 <span class="kw">in</span> itertools.combinations(features, <span class="dv">2</span>):</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    used_features.append([var1,var2])</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> sm.add_constant(Sleep[[var1, var2]])</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> sm.OLS(y, X).fit()</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>    rss <span class="op">=</span> <span class="bu">sum</span>((model.fittedvalues <span class="op">-</span> y)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>    p_star <span class="op">=</span> <span class="dv">3</span>  <span class="co"># 변수 2개 + 절편</span></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>    cp <span class="op">=</span> rss <span class="op">/</span> sigma_squared_hat <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> p_star</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>    cp_list.append(cp)</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>    pstar_list.append(p_star)</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a><span class="co"># === 산점도 그리기 ===</span></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>plt.scatter(pstar_list, cp_list, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"사용한 변수 개수 (p*)"</span>)</span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"C_p 값"</span>)</span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"$C_p$ vs 변수 개수 산점도"</span>)</span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="4.ML_HW1_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="계산한-3의-값들-중-가장-작은-값은-어떤-변수들을-사용할-때인가" class="level4">
+<h4 class="anchored" data-anchor-id="계산한-3의-값들-중-가장-작은-값은-어떤-변수들을-사용할-때인가">4) 계산한 3)의 값들 중 가장 작은 값은 어떤 변수(들)을 사용할 때인가?</h4>
+<p><code>-</code> <code>PhoneTime</code>, <code>WorkHours</code> 를 사용할 때 <span class="math inline">\(C_p\)</span>의 값이 가장 작다</p>
+<div id="bc634acb-fadd-4bfe-93da-7fe91a7e5873" class="cell" data-execution_count="112">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>used_features[np.argmin(cp_list)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="112">
+<pre><code>['PhoneTime', 'WorkHours']</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="반응변수가-중앙값을-초과할-때-1-이하일-때-0으로-하여-아래를-시행하시오." class="level3">
+<h3 class="anchored" data-anchor-id="반응변수가-중앙값을-초과할-때-1-이하일-때-0으로-하여-아래를-시행하시오.">3. 반응변수가 중앙값을 초과할 때 1, 이하일 때 0으로 하여 아래를 시행하시오.</h3>
+<section id="로지스틱-회귀분석을-시행해서-혼동행렬을-구하시오" class="level4">
+<h4 class="anchored" data-anchor-id="로지스틱-회귀분석을-시행해서-혼동행렬을-구하시오">1) 로지스틱 회귀분석을 시행해서 혼동행렬을 구하시오</h4>
+<div id="824f7eed-6e8b-40f8-a452-7cb1ff606781" class="cell" data-execution_count="180">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP <span class="im">import</span> confusion_table</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.models <span class="im">import</span> (ModelSpec <span class="im">as</span> MS,summarize)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> y 를 반응변수 <code>SleepTime</code>의 중앙값을 초과하면 1, 이하이면 0</p>
+<div id="4ff18a7d-31f7-4bee-9ad6-0cad271e0d7d" class="cell" data-execution_count="153">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> Sleep.drop(columns<span class="op">=</span>[<span class="st">'SleepTime'</span>])</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (Sleep[<span class="st">'SleepTime'</span>]<span class="op">&gt;</span>median_sleep).astype(<span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 상수항 추가</p>
+<div id="079c5729-10f9-4110-adf3-2c3262ae58b2" class="cell" data-execution_count="154">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>design <span class="op">=</span> MS(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="2b087ddd-6444-4a3c-b69f-9190d9877692" class="cell" data-execution_count="155">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>X<span class="op">=</span>design.fit_transform(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="0a6684da-ddf6-4127-9cec-b22e4d79dfe4" class="cell" data-scrolled="true" data-execution_count="157">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>X[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="157">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">intercept</th>
+<th data-quarto-table-cell-role="th">WorkoutTime</th>
+<th data-quarto-table-cell-role="th">ReadingTime</th>
+<th data-quarto-table-cell-role="th">PhoneTime</th>
+<th data-quarto-table-cell-role="th">WorkHours</th>
+<th data-quarto-table-cell-role="th">CaffeineIntake</th>
+<th data-quarto-table-cell-role="th">RelaxationTime</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1.0</td>
+<td>1.12</td>
+<td>0.52</td>
+<td>3.29</td>
+<td>7.89</td>
+<td>216.08</td>
+<td>0.75</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1.0</td>
+<td>2.85</td>
+<td>0.49</td>
+<td>4.22</td>
+<td>5.03</td>
+<td>206.18</td>
+<td>0.67</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1.0</td>
+<td>2.20</td>
+<td>1.81</td>
+<td>4.04</td>
+<td>9.23</td>
+<td>28.73</td>
+<td>0.35</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1.0</td>
+<td>1.80</td>
+<td>0.50</td>
+<td>1.62</td>
+<td>7.68</td>
+<td>276.77</td>
+<td>1.21</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1.0</td>
+<td>0.47</td>
+<td>0.54</td>
+<td>1.60</td>
+<td>4.94</td>
+<td>170.54</td>
+<td>0.95</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p><code>-</code> train과 test로 분리 비율 0.7 : 0.3</p>
+<div id="41bee2c9-fc21-4ce7-95ab-772a6c77aac7" class="cell" data-execution_count="181">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 로지스틱 회귀분석 모델 생성 및 적합</p>
+<div id="795543a5-9d11-4a37-8685-4660d6875006" class="cell" data-execution_count="182">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>glm <span class="op">=</span> sm.GLM(y_train, X_train, family<span class="op">=</span>sm.families.Binomial())</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> glm.fit()</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summarize(results))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  coef  std err       z  P&gt;|z|
+WorkoutTime     1.6071    0.105  15.348  0.000
+ReadingTime     1.5103    0.139  10.838  0.000
+PhoneTime      -1.0310    0.072 -14.263  0.000
+WorkHours      -0.4311    0.036 -11.868  0.000
+CaffeineIntake  0.0004    0.001   0.487  0.626
+RelaxationTime  1.7463    0.141  12.413  0.000</code></pre>
+</div>
+</div>
+<p><code>-</code> 예측한 확률이 0.5보다 크면 1로, 작으면 0으로 <code>labels</code>에 저장</p>
+<div id="4ea583ac-78f2-419b-bdbe-aaf5602b8ad1" class="cell" data-execution_count="192">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> results.predict(exog<span class="op">=</span>X_test)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> np.array([<span class="dv">0</span>]<span class="op">*</span><span class="bu">len</span>(y_test))  <span class="co"># 기본값 0</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>labels[probs <span class="op">&gt;</span> <span class="fl">0.5</span>] <span class="op">=</span> <span class="dv">1</span> </span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(probs)[:<span class="dv">5</span>])</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(labels[:<span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[0.9911024037508189, 0.13970493273847814, 0.9362503403933953, 0.9184685442097736, 0.012038711545818204]
+[1 0 1 1 0]</code></pre>
+</div>
+</div>
+<p><code>-</code> <strong>혼동행렬</strong></p>
+<div id="3aaa43c5-1056-4143-a106-16f74dc4dd5e" class="cell" data-execution_count="193">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>confusion_table(labels, y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="193">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Truth</th>
+<th data-quarto-table-cell-role="th">0</th>
+<th data-quarto-table-cell-role="th">1</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Predicted</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>248</td>
+<td>68</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>42</td>
+<td>242</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p><code>-</code> 정확도</p>
+<div id="5d331a7b-ee41-40a1-9152-a1497d52f48b" class="cell" data-execution_count="195">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>np.mean(labels <span class="op">==</span> y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="195">
+<pre><code>0.8166666666666667</code></pre>
+</div>
+</div>
+</section>
+<section id="lda를-시행해서-혼동행렬을-구하시오" class="level4">
+<h4 class="anchored" data-anchor-id="lda를-시행해서-혼동행렬을-구하시오">2) LDA를 시행해서 혼동행렬을 구하시오</h4>
+<div id="27b174ab-aa51-4b0a-bca0-1844f4e1459d" class="cell" data-execution_count="169">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.discriminant_analysis <span class="im">import</span> LinearDiscriminantAnalysis <span class="im">as</span> LDA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 상수항이 없는 X데이터 사용</p>
+<div id="06afb77b-2058-4dde-bb47-00feb1b8fb26" class="cell" data-execution_count="243">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> Sleep.drop(columns<span class="op">=</span>[<span class="st">'SleepTime'</span>])</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (Sleep[<span class="st">'SleepTime'</span>]<span class="op">&gt;</span>median_sleep).astype(<span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> train과 test로 분리 비율 0.7:0.3</p>
+<div id="747847a2-ec03-42f0-afd9-b7e376c0141a" class="cell" data-execution_count="244">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> LDA 적합 및 예측</p>
+<div id="8561c968-cf8c-49c3-9f1e-e034d226ab52" class="cell" data-execution_count="245">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>lda <span class="op">=</span> LDA(store_covariance<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>lda.fit(X_train, y_train)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>lda_pred <span class="op">=</span> lda.predict(X_test)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lda_pred[:<span class="dv">15</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1 0 1 1 0 0 0 1 1 0 0 1 0 0 1]</code></pre>
+</div>
+</div>
+<p><code>-</code> 혼동행렬</p>
+<div id="7e26adb3-11b5-48e4-86ae-1111f48c9cb6" class="cell" data-execution_count="246">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>confusion_table(lda_pred, y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="246">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Truth</th>
+<th data-quarto-table-cell-role="th">0</th>
+<th data-quarto-table-cell-role="th">1</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Predicted</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>288</td>
+<td>15</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2</td>
+<td>295</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="번에서-민감도와-특이도는-어떻게-되는가.-민감도는-1을-기준으로-함" class="level4">
+<h4 class="anchored" data-anchor-id="번에서-민감도와-특이도는-어떻게-되는가.-민감도는-1을-기준으로-함">3) 2)번에서 민감도와 특이도는 어떻게 되는가. 민감도는 1을 기준으로 함</h4>
+<p><code>-</code> 민감도 TP/(TP+FN)</p>
+<p><code>-</code> 특이도 TN/(TN+FP)</p>
+<ul>
+<li>TP : 실제1 <span class="math inline">\(\to\)</span> 예측1 (정답)</li>
+<li>FN : 실제1 <span class="math inline">\(\to\)</span> 예측0 (틀림)</li>
+<li>TN : 실제0 <span class="math inline">\(\to\)</span> 예측0 (정답)</li>
+<li>FP : 실제0 <span class="math inline">\(\to\)</span> 예측1 (틀림)</li>
+</ul>
+<p><code>-</code> 혼동행렬</p>
+<div id="f8277844-f06e-4c7f-a03f-244ac8b31b84" class="cell" data-execution_count="247">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_table(lda_pred,y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="b28d827d-0ff2-4ec8-9af6-e65941251223" class="cell" data-execution_count="248">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>cm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="248">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Truth</th>
+<th data-quarto-table-cell-role="th">0</th>
+<th data-quarto-table-cell-role="th">1</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Predicted</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>288</td>
+<td>15</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2</td>
+<td>295</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p><code>-</code> 2차원구조 인덱싱을 통해 값 대입</p>
+<div id="15ef693b-ce77-4e47-a6a7-690f2a203b76" class="cell" data-execution_count="249">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>TP <span class="op">=</span> cm[<span class="dv">1</span>][<span class="dv">1</span>]</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>FN <span class="op">=</span> cm[<span class="dv">1</span>][<span class="dv">0</span>]</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>TN <span class="op">=</span> cm[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>FP <span class="op">=</span> cm[<span class="dv">0</span>][<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="6a258310-2bef-475d-a850-d93d00136f8a" class="cell" data-execution_count="250">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>TP, FN, TN, FP</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="250">
+<pre><code>(295, 15, 288, 2)</code></pre>
+</div>
+</div>
+<p><code>-</code> 민감도 특이도 계산</p>
+<div id="0e634de9-3a96-48e2-b509-bd831ba55c91" class="cell" data-execution_count="251">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 민감도 (class 1 기준)</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>sensitivity <span class="op">=</span> TP <span class="op">/</span> (TP <span class="op">+</span> FN)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 특이도 (class 0 기준)</span></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>specificity <span class="op">=</span> TN <span class="op">/</span> (TN <span class="op">+</span> FP)</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"민감도 (class=1): </span><span class="sc">{</span>sensitivity<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"특이도 (class=0): </span><span class="sc">{</span>specificity<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>민감도 (class=1): 0.95
+특이도 (class=0): 0.99</code></pre>
+</div>
+</div>
+</section>
+<section id="번에서-예측의-규칙을-바꾸어-1에-대한-예측확률이-0.20-이상일-때-1로-예측하면-민감도와-특이도는-어떻게-변하는가" class="level4">
+<h4 class="anchored" data-anchor-id="번에서-예측의-규칙을-바꾸어-1에-대한-예측확률이-0.20-이상일-때-1로-예측하면-민감도와-특이도는-어떻게-변하는가">4) 3)번에서 예측의 규칙을 바꾸어 1에 대한 예측확률이 0.20 이상일 때 1로 예측하면 민감도와 특이도는 어떻게 변하는가?</h4>
+<p><code>-</code> 1 값에 대한 확률 계산</p>
+<div id="842cf485-99f4-4891-ad2d-72ad07b4e99f" class="cell" data-execution_count="252">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>probs[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="252">
+<pre><code>array([0.99768879, 0.0077565 , 0.96238128, 0.99887321, 0.0017131 ])</code></pre>
+</div>
+</div>
+<div id="a3786c5d-bec4-4dfd-806f-eeb25514d28f" class="cell" data-execution_count="253">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> lda.predict_proba(X_test)[:,<span class="dv">1</span>] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 예측기준 0.20으로 설정해 새로운 예측값 생성</p>
+<div id="fcaa9d94-bb17-4f46-b7ae-94b26e4d7352" class="cell" data-execution_count="254">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>custom_pred <span class="op">=</span> (probs <span class="op">&gt;</span> <span class="fl">0.20</span>).astype(<span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="807d3742-ba56-4aca-acb0-0986aca28d07" class="cell" data-execution_count="255">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_table(custom_pred,y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 새로운 혼동행렬</p>
+<div id="810159da-ccf2-4a67-a5b7-3d465af1ca84" class="cell" data-execution_count="256">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>cm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="256">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Truth</th>
+<th data-quarto-table-cell-role="th">0</th>
+<th data-quarto-table-cell-role="th">1</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Predicted</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>211</td>
+<td>8</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>79</td>
+<td>302</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="2caf253b-159f-456f-aee5-c43e8be17b67" class="cell" data-execution_count="257">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="bu">sum</span>(custom_pred <span class="op">==</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="257">
+<pre><code>381</code></pre>
+</div>
+</div>
+<div id="6dbeeb26-124f-46c6-a962-f946f7cd6d39" class="cell" data-execution_count="258">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>TP <span class="op">=</span> cm[<span class="dv">1</span>][<span class="dv">1</span>]</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>FN <span class="op">=</span> cm[<span class="dv">1</span>][<span class="dv">0</span>]</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>TN <span class="op">=</span> cm[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>FP <span class="op">=</span> cm[<span class="dv">0</span>][<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="dd3640ae-8cfb-4712-a17b-337da0eb563a" class="cell" data-execution_count="259">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>TP, FN, TN, FP</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="259">
+<pre><code>(302, 8, 211, 79)</code></pre>
+</div>
+</div>
+<p><code>-</code> 민감도 특이도 계산</p>
+<div id="481bf349-b631-45ae-8933-b1771836049f" class="cell" data-execution_count="260">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 민감도 (class 1 기준)</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>sensitivity <span class="op">=</span> TP <span class="op">/</span> (TP <span class="op">+</span> FN)</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 특이도 (class 0 기준)</span></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>specificity <span class="op">=</span> TN <span class="op">/</span> (TN <span class="op">+</span> FP)</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"민감도 (class=1): </span><span class="sc">{</span>sensitivity<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"특이도 (class=0): </span><span class="sc">{</span>specificity<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>민감도 (class=1): 0.97
+특이도 (class=0): 0.73</code></pre>
+</div>
+</div>
+<p><code>-</code> 클래스 1로 분류되는 사례 TP, FP가 늘어나면서 민감도가 증가하고 특이도가 감소하였다</p>
+
+
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
