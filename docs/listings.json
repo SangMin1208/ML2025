@@ -2,6 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/5.sampling&resampling.html",
+      "/posts/4.ML_HW1.html",
       "/posts/3.Classification.html",
       "/posts/2.LinearRegression.html",
       "/posts/1.Basics.html"
