@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/6.LinearModelSelection_and_Regularization.html",
       "/posts/5.sampling&resampling.html",
       "/posts/4.ML_HW1.html",
       "/posts/3.Classification.html",
