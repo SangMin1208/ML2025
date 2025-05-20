@@ -2,7 +2,9 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/9.ML_GAM.html",
       "/posts/7.MovingBeyondLinearity.html",
+      "/posts/8.VarianceAndBias.html",
       "/posts/6.LinearModelSelection_and_Regularization.html",
       "/posts/5.sampling&resampling.html",
       "/posts/4.ML_HW1.html",
